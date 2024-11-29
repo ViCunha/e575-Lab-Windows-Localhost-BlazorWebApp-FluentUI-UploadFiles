@@ -1,0 +1,68 @@
+﻿@using BlazorWebAppFluentUIUploadFiles.Models
+@using BlazorWebAppFluentUIUploadFiles.Components.Specific
+
+@rendermode InteractiveServer
+@inject IDialogService DialogService
+
+@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new Fluent Blazor app.
+
+<FluentDialogProvider />
+
+<FluentMessageBarProvider Section="TOP" />
+
+<br/>
+
+<FluentButton @onclick="OpenPanelRightAsync" Appearance="Appearance.Accent" >
+    Click Me
+</FluentButton>
+
+@code {
+    
+    private readonly SimplePerson simplePerson = new()
+        {
+            Firstname = "Steve",
+            Lastname = "Roth",
+            Age = 42,
+        };
+
+    private async Task OpenPanelRightAsync()
+    {
+        var dialogService = new DialogService();
+
+        DialogParameters<SimplePerson> parameters = new()
+            {
+                Content = simplePerson,
+                Alignment = HorizontalAlignment.Right,
+                Title = $"Hello {simplePerson.Firstname}",
+                PrimaryAction = "Yes",
+                SecondaryAction = "No",
+            };
+
+        IDialogReference dialog = await DialogService.ShowPanelAsync<SimplePanel>(simplePerson, parameters);
+
+        DialogResult result = await dialog.Result;
+
+        HandlePanel(result);
+    }
+
+    private static void HandlePanel(DialogResult result)
+    {
+        if (result.Cancelled)
+        {
+            return;
+        }
+
+        if (result.Data is not null)
+        {
+            var simplePerson = result.Data as SimplePerson;
+            return;
+        }
+    }
+
+}

@@ -1,0 +1,11 @@
+
+
+- Sub-tasks
+
++ Create a data class data object (eg. SimplePerson.cs)
+
++ Create a Razor component to present the class data object (eg. SimplePanel.Razor)
+
++ Include into the Home.Razor a button to call the DialogService 
+
+
